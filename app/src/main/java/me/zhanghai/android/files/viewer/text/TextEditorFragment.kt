@@ -227,6 +227,7 @@ class TextEditorFragment : Fragment(), ConfirmReloadDialogFragment.Listener,
         if (match != null) {
             applySearchHighlights()
             scrollToMatch(match)
+            updateSearchMatchCount()
         }
     }
 
