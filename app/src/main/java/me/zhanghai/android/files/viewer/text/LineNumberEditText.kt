@@ -103,27 +103,29 @@ class LineNumberEditText : AppCompatEditText {
     // Appearance sync
     // ──────────────────────────────────────────────────────────────────
 
-    private fun syncLineNumberPaint() {
-        lineNumberPaint.textSize = textSize
-        lineNumberPaint.typeface = typeface
-        val color = currentTextColor
-        lineNumberPaint.color = Color.argb(
-            (Color.alpha(color) * 0.38f).coerceIn(0, 255),
-            Color.red(color),
-            Color.green(color),
-            Color.blue(color)
-        )
-    }
+     private fun syncLineNumberPaint() {
+         lineNumberPaint.textSize = textSize
+         lineNumberPaint.typeface = typeface
+         val color = currentTextColor
+         val alpha = (Color.alpha(color) * 0.38f).toInt().coerceIn(0, 255)
+         lineNumberPaint.color = Color.argb(
+             alpha,
+             Color.red(color),
+             Color.green(color),
+             Color.blue(color)
+         )
+     }
 
-    private fun syncDividerPaint() {
-        val color = currentTextColor
+     private fun syncDividerPaint() {
+         val color = currentTextColor
+         val alpha = (Color.alpha(color) * 0.12f).toInt().coerceIn(0, 255)
         dividerPaint.color = Color.argb(
-            (Color.alpha(color) * 0.12f).coerceIn(0, 255),
-            Color.red(color),
-            Color.green(color),
-            Color.blue(color)
-        )
-    }
+             alpha,
+             Color.red(color),
+             Color.green(color),
+             Color.blue(color)
+         )
+     }
 
     // ──────────────────────────────────────────────────────────────────
     // Gutter width management
