@@ -32,112 +32,125 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- ──────────────── 搜索栏 ──────────────── -->
+        <!-- 用垂直 LinearLayout 包裹搜索栏和内容区，避免遮挡 -->
         <LinearLayout
-            android:id="@+id/searchBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="4dp"
-            android:paddingEnd="8dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:visibility="gone"
-            android:background="?colorSurface"
-            android:elevation="4dp"
-            tools:visibility="visible">
-
-            <ImageButton
-                android:id="@+id/searchCloseButton"
-                style="?borderlessButtonStyle"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:contentDescription="@string/search_close"
-                android:src="@drawable/close_icon_control_normal_24dp" />
-
-            <EditText
-                android:id="@+id/searchEdit"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:hint="@string/search_hint"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:singleLine="true"
-                android:textAppearance="?textAppearanceBody1" />
-
-            <TextView
-                android:id="@+id/searchMatchCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:textAppearance="?textAppearanceBody2"
-                android:visibility="gone"
-                tools:text="1/5"
-                tools:visibility="visible" />
-
-            <ImageButton
-                android:id="@+id/searchPreviousButton"
-                style="?borderlessButtonStyle"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:contentDescription="@string/search_previous"
-                android:src="@drawable/arrow_up_icon_control_normal_24dp" />
-
-            <ImageButton
-                android:id="@+id/searchNextButton"
-                style="?borderlessButtonStyle"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:contentDescription="@string/search_next"
-                android:src="@drawable/arrow_down_icon_control_normal_24dp" />
-        </LinearLayout>
-        <!-- ──────────────── 搜索栏结束 ──────────────── -->
-
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/errorText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingTop="12dp"
-            android:paddingBottom="32dp"
-            android:drawablePadding="8dp"
-            android:gravity="center_horizontal"
-            android:textAppearance="?textAppearanceListItem"
-            android:visibility="gone"
-            app:drawableTopCompat="@drawable/error_icon_240dp" />
-
-        <!-- TODO: 未来可能使用 WebView 处理大文本。 -->
-        <me.zhanghai.android.fastscroll.FastScrollNestedScrollView
-            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:fillViewport="true">
+            android:orientation="vertical">
 
-            <me.zhanghai.android.files.ui.ScrollingChildEditText
-                android:id="@+id/textEdit"
+            <!-- ──────────────── 搜索栏 ──────────────── -->
+            <LinearLayout
+                android:id="@+id/searchBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/screen_edge_margin"
-                android:background="@null"
-                android:gravity="top"
-                android:importantForAutofill="no"
-                android:inputType="textMultiLine"
-                android:textAppearance="?textAppearanceListItemSecondary">
-                <requestFocus />
-            </me.zhanghai.android.files.ui.ScrollingChildEditText>
-        </me.zhanghai.android.fastscroll.FastScrollNestedScrollView>
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="4dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:visibility="gone"
+                android:background="?colorSurface"
+                android:elevation="4dp"
+                tools:visibility="visible">
+
+                <ImageButton
+                    android:id="@+id/searchCloseButton"
+                    style="?borderlessButtonStyle"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="@string/search_close"
+                    android:src="@drawable/close_icon_control_normal_24dp" />
+
+                <EditText
+                    android:id="@+id/searchEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/search_hint"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textAppearance="?textAppearanceBody1" />
+
+                <TextView
+                    android:id="@+id/searchMatchCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:textAppearance="?textAppearanceBody2"
+                    android:visibility="gone"
+                    tools:text="1/17"
+                    tools:visibility="visible" />
+
+                <ImageButton
+                    android:id="@+id/searchPreviousButton"
+                    style="?borderlessButtonStyle"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="@string/search_previous"
+                    android:src="@drawable/arrow_up_icon_control_normal_24dp" />
+
+                <ImageButton
+                    android:id="@+id/searchNextButton"
+                    style="?borderlessButtonStyle"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:contentDescription="@string/search_next"
+                    android:src="@drawable/arrow_down_icon_control_normal_24dp" />
+            </LinearLayout>
+            <!-- ──────────────── 搜索栏结束 ──────────────── -->
+
+            <!-- 内容区域：ProgressBar、错误提示、编辑器 -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <ProgressBar
+                    android:id="@+id/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/errorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="32dp"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_horizontal"
+                    android:textAppearance="?textAppearanceListItem"
+                    android:visibility="gone"
+                    app:drawableTopCompat="@drawable/error_icon_240dp" />
+
+                <!-- TODO: Use a WebView for large amount of text. -->
+                <me.zhanghai.android.fastscroll.FastScrollNestedScrollView
+                    android:id="@+id/scrollView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:fillViewport="true">
+
+                    <me.zhanghai.android.files.ui.ScrollingChildEditText
+                        android:id="@+id/textEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/screen_edge_margin"
+                        android:background="@null"
+                        android:gravity="top"
+                        android:importantForAutofill="no"
+                        android:inputType="textMultiLine"
+                        android:textAppearance="?textAppearanceListItemSecondary">
+                        <requestFocus />
+                    </me.zhanghai.android.files.ui.ScrollingChildEditText>
+                </me.zhanghai.android.fastscroll.FastScrollNestedScrollView>
+            </FrameLayout>
+        </LinearLayout>
     </me.zhanghai.android.files.ui.CoordinatorScrollingFrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
