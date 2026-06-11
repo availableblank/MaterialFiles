@@ -119,14 +119,15 @@ class LineNumberEditText : AppCompatEditText {
     private fun updateGutterWidth() {
         val paint = lineNumberPaint ?: return
         val newDigitCount = maxOf(1, logicalLineCount.toString().length)
-        if (newDigitCount == gutterDigitCount) return
+        // 加上 gutterWidth == 0 的检查，确保首次初始化不被跳过
+        if (newDigitCount == gutterDigitCount && gutterWidth > 0) return
         gutterDigitCount = newDigitCount
         val textWidth = paint.measureText("0".repeat(gutterDigitCount))
         val newGutterWidth = maxOf(
             minGutterWidth,
             textWidth + gutterTextMargin + dividerMargin
         ).toInt()
-        if (newGutterWidth != gutterWidth) {
+        if (newGutterWidth != gutterWidth || gutterWidth == 0) {
             gutterWidth = newGutterWidth
             applyPadding()
         }
