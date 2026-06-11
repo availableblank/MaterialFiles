@@ -1257,33 +1257,88 @@ class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.
         openFileWithIntent(file, true)
     }
 
-    private fun openFileWithIntent(file: FileItem, withChooser: Boolean) {
-        val path = file.path
-        val mimeType = file.mimeType
-        if (path.isArchivePath) {
-            FileJobService.open(path, mimeType, withChooser, requireContext())
-        } else {
-            val intent = path.fileProviderUri.createViewIntent(mimeType)
-                .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                .apply {
-                    extraPath = path
-                    maybeAddImageViewerActivityExtras(this, path, mimeType)
-                }
-                .let {
-                    if (withChooser) {
-                        it.withChooser(
-                            EditFileActivity::class.createIntent()
-                                .putArgs(EditFileActivity.Args(path, mimeType)),
-                            OpenFileAsDialogActivity::class.createIntent()
-                                .putArgs(OpenFileAsDialogFragment.Args(path))
-                        )
-                    } else {
-                        it
-                    }
-                }
-            startActivitySafe(intent)
+private fun openFileWithIntent(file: FileItem, withChooser: Boolean) {
+    val path = file.path
+    val mimeType = file.mimeType
+    if (path.isArchivePath) {
+        FileJobService.open(path, mimeType, withChooser, requireContext())
+        return
+    }
+    if (!withChooser) {
+        if (mimeType.isImage) {
+            openWithImageViewer(file)
+            return
+        }
+        if (mimeType.isTextType()) {
+            openWithTextEditor(file)
+            return
         }
     }
+    val intent = path.fileProviderUri.createViewIntent(mimeType)
+        .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+        .apply {
+            extraPath = path
+            maybeAddImageViewerActivityExtras(this, path, mimeType)
+        }
+        .let {
+            if (withChooser) {
+                it.withChooser(
+                    EditFileActivity::class.createIntent()
+                        .putArgs(EditFileActivity.Args(path, mimeType)),
+                    OpenFileAsDialogActivity::class.createIntent()
+                        .putArgs(OpenFileAsDialogFragment.Args(path))
+                )
+            } else {
+                it
+            }
+        }
+    startActivitySafe(intent)
+}
+
+private fun openWithImageViewer(file: FileItem) {
+    val path = file.path
+    var paths = mutableListOf<Path>()
+    for (index in 0..<adapter.itemCount) {
+        val adapterFile = adapter.getItem(index)
+        val filePath = adapterFile.path
+        if (adapterFile.mimeType.isImage || filePath == path) {
+            paths.add(filePath)
+        }
+    }
+    var position = paths.indexOf(path)
+    if (position == -1) {
+        val intent = Intent(requireContext(), ImageViewerActivity::class.java)
+        ImageViewerActivity.putExtras(intent, listOf(path), 0)
+        startActivity(intent)
+        return
+    }
+    if (paths.size > IMAGE_VIEWER_ACTIVITY_PATH_LIST_SIZE_MAX) {
+        val start = (position - IMAGE_VIEWER_ACTIVITY_PATH_LIST_SIZE_MAX / 2)
+            .coerceIn(0, paths.size - IMAGE_VIEWER_ACTIVITY_PATH_LIST_SIZE_MAX)
+        paths = paths.subList(start, start + IMAGE_VIEWER_ACTIVITY_PATH_LIST_SIZE_MAX)
+        position -= start
+    }
+    val intent = Intent(requireContext(), ImageViewerActivity::class.java)
+    ImageViewerActivity.putExtras(intent, paths, position)
+    startActivity(intent)
+}
+
+private fun openWithTextEditor(file: FileItem) {
+    val intent = Intent(requireContext(), TextEditorActivity::class.java)
+        .apply { extraPath = file.path }
+    startActivity(intent)
+}
+
+private fun MimeType.isTextType(): Boolean =
+    value.startsWith("text/") ||
+    value in listOf(
+        "application/json",
+        "application/xml",
+        "application/javascript",
+        "application/xhtml+xml",
+        "application/x-sh",
+        "application/x-shellscript",
+    )}
 
     private fun maybeAddImageViewerActivityExtras(intent: Intent, path: Path, mimeType: MimeType) {
         if (!mimeType.isImage) {
