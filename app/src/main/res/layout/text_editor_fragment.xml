@@ -51,7 +51,6 @@
                 android:paddingBottom="4dp"
                 android:visibility="gone"
                 android:background="?colorSurface"
-                android:elevation="4dp"
                 tools:visibility="visible">
 
                 <ImageButton
