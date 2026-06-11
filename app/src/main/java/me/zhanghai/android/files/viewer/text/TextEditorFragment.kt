@@ -195,15 +195,18 @@ class TextEditorFragment : Fragment(), ConfirmReloadDialogFragment.Listener,
     private var searchLastQuery = ""
 
     private fun closeSearch() {
-        searchBarVisible = false
-        binding.searchBar.fadeOutUnsafe()
-        binding.searchEdit.clearFocus()
-        clearSearchHighlights()
-        searchLastQuery = binding.searchEdit.text?.toString() ?: ""
-        searchHelper.clear()
-        updateSearchMatchCount()
-        onBackPressedCallback.isEnabled = viewModel.isTextChanged.value
-    }
+    searchBarVisible = false
+    // 直接设置 GONE 而不依赖动画，确保布局立刻回收空间
+    binding.searchBar.visibility = View.GONE
+    binding.searchEdit.clearFocus()
+    clearSearchHighlights()
+    searchLastQuery = binding.searchEdit.text?.toString() ?: ""
+    searchHelper.clear()
+    updateSearchMatchCount()
+    onBackPressedCallback.isEnabled = viewModel.isTextChanged.value
+    // 强制父布局重新测量，消除空白残留
+    binding.searchBar.requestLayout()
+}
 
     private fun performSearch(query: String) {
         searchLastQuery = query
