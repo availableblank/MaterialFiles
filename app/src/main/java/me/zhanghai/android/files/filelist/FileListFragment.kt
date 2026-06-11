@@ -131,6 +131,8 @@ import me.zhanghai.android.files.util.viewModels
 import me.zhanghai.android.files.util.withChooser
 import me.zhanghai.android.files.viewer.image.ImageViewerActivity
 import kotlin.math.roundToInt
+import me.zhanghai.android.files.filelist.EditFileActivity
+import me.zhanghai.android.files.viewer.text.TextEditorActivity
 
 class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.Listener,
     ConfirmReplaceFileDialogFragment.Listener, OpenApkDialogFragment.Listener,
@@ -1338,7 +1340,7 @@ private fun MimeType.isTextType(): Boolean =
         "application/xhtml+xml",
         "application/x-sh",
         "application/x-shellscript",
-    )}
+    )
 
     private fun maybeAddImageViewerActivityExtras(intent: Intent, path: Path, mimeType: MimeType) {
         if (!mimeType.isImage) {
