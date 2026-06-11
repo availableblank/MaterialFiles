@@ -170,40 +170,44 @@ class LineNumberEditText : AppCompatEditText {
         super.onDraw(canvas)
     }
 
-    private fun drawGutter(canvas: Canvas) {
-        val linePaint = lineNumberPaint ?: return
-        val divPaint = dividerPaint ?: return
-        val layout = layout ?: return
-        val mapping = visualToLogicalLine
-        if (mapping.isEmpty()) return
+private fun drawGutter(canvas: Canvas) {
+    val linePaint = lineNumberPaint ?: return
+    val divPaint = dividerPaint ?: return
+    val layout = layout ?: return
 
-        val lineCount = layout.lineCount
-        if (lineCount == 0) return
-
-        clipRect.setEmpty()
-        if (!canvas.getClipBounds(clipRect)) return
-        if (clipRect.isEmpty) return
-
-        val firstLine = layout.getLineForVertical(clipRect.top).coerceIn(0, lineCount - 1)
-        val lastLine = layout.getLineForVertical(clipRect.bottom).coerceIn(0, lineCount - 1)
-
-        for (i in firstLine..lastLine) {
-            val logical = mapping.getOrNull(i) ?: continue
-            if (logical < 0) continue
-            val baseline = layout.getLineBaseline(i)
-            val x = gutterWidth - dividerMargin - gutterTextMargin
-            canvas.drawText(logical.toString(), x, baseline.toFloat(), linePaint)
-        }
-
-        val dividerX = gutterWidth - dividerMargin + divPaint.strokeWidth / 2f
-        canvas.drawLine(
-            dividerX,
-            clipRect.top.toFloat(),
-            dividerX,
-            clipRect.bottom.toFloat(),
-            divPaint
-        )
+    if (visualToLogicalLine.size != layout.lineCount) {
+        updateLogicalLineMapping()
     }
+    val mapping = visualToLogicalLine
+    if (mapping.isEmpty()) return
+
+    val lineCount = layout.lineCount
+    if (lineCount == 0) return
+
+    clipRect.setEmpty()
+    if (!canvas.getClipBounds(clipRect)) return
+    if (clipRect.isEmpty) return
+
+    val firstLine = layout.getLineForVertical(clipRect.top).coerceIn(0, lineCount - 1)
+    val lastLine = layout.getLineForVertical(clipRect.bottom).coerceIn(0, lineCount - 1)
+
+    for (i in firstLine..lastLine) {
+        val logical = mapping.getOrNull(i) ?: continue
+        if (logical < 0) continue
+        val baseline = layout.getLineBaseline(i)
+        val x = gutterWidth - dividerMargin - gutterTextMargin
+        canvas.drawText(logical.toString(), x, baseline.toFloat(), linePaint)
+    }
+
+    val dividerX = gutterWidth - dividerMargin + divPaint.strokeWidth / 2f
+    canvas.drawLine(
+        dividerX,
+        clipRect.top.toFloat(),
+        dividerX,
+        clipRect.bottom.toFloat(),
+        divPaint
+    )
+}
 
     // ── Preserve ScrollingChildEditText behaviour ─────────────────
 
@@ -230,13 +234,11 @@ class LineNumberEditText : AppCompatEditText {
         updateGutterWidth()
     }
 
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        super.onLayout(changed, left, top, right, bottom)
-        if (changed) {
-            updateLogicalLineMapping()
-            updateGutterWidth()
-        }
-    }
+override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+    super.onLayout(changed, left, top, right, bottom)
+    updateLogicalLineMapping()
+    updateGutterWidth()
+}
 
     override fun setTextSize(size: Float) {
         super.setTextSize(size)
