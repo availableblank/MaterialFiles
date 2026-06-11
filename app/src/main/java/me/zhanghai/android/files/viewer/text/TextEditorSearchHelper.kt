@@ -7,7 +7,6 @@ package me.zhanghai.android.files.viewer.text
 
 import android.graphics.Typeface
 import android.text.Spannable
-import android.text.SpannableStringBuilder
 import android.text.style.BackgroundColorSpan
 import android.text.style.StyleSpan
 
@@ -74,7 +73,19 @@ class TextEditorSearchHelper {
         caseSensitive = false
     }
 
-    // ------------------------------------------------------------------ 高亮辅助方法
+    // ────────────────────── 高亮（实例方法，供外部调用） ──────────────────────
+
+    /** 使用当前搜索结果对 [spannable] 应用高亮。 */
+    fun applyHighlights(spannable: Spannable) {
+        Companion.applyHighlights(spannable, matchPositions, currentMatchIndex)
+    }
+
+    /** 移除本搜索器曾添加的所有高亮 span。 */
+    fun clearHighlights(spannable: Spannable) {
+        Companion.clearHighlights(spannable)
+    }
+
+    // ────────────────────── 静态工具方法 ──────────────────────
 
     companion object {
         /** 半透明浅黄色 — 所有匹配项。 */

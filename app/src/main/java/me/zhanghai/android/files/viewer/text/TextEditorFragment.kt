@@ -240,19 +240,15 @@ class TextEditorFragment : Fragment(), ConfirmReloadDialogFragment.Listener,
         binding.scrollView.smoothScrollTo(0, y.coerceAtLeast(0))
     }
 
-    private fun applySearchHighlights() {
-        val editable = binding.textEdit.text ?: return
-        TextEditorSearchHelper.applyHighlights(
-            editable,
-            searchHelper.matchPositions,
-            searchHelper.currentIndex
-        )
-    }
+	private fun applySearchHighlights() {
+		val editable = binding.textEdit.text ?: return
+		searchHelper.applyHighlights(editable)
+	}
 
-    private fun clearSearchHighlights() {
-        val editable = binding.textEdit.text ?: return
-        TextEditorSearchHelper.clearHighlights(editable)
-    }
+	private fun clearSearchHighlights() {
+		val editable = binding.textEdit.text ?: return
+		searchHelper.clearHighlights(editable)
+	}
 
     private fun updateSearchMatchCount() {
         val count = searchHelper.matchCount
