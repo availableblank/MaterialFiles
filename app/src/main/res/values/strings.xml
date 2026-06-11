@@ -707,6 +707,13 @@
     <string name="text_editor_reload_message">Are you sure you want to reload? Unsaved changes to this document will be lost.</string>
     <string name="text_editor_encoding">Encoding</string>
     <string name="text_editor_close_message">Are you sure you want to discard unsaved changes to this document?</string>
+    <string name="search_find">查找</string>
+    <string name="search_hint">在文件中查找</string>
+    <string name="search_next">下一个匹配</string>
+    <string name="search_previous">上一个匹配</string>
+    <string name="search_close">关闭搜索</string>
+    <string name="search_no_matches">未找到匹配</string>
+    <string name="search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">FTP server</string>
     <string name="ftp_server_state_title">Status</string>

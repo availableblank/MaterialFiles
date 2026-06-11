@@ -7,6 +7,8 @@ package me.zhanghai.android.files.viewer.text
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -14,6 +16,8 @@ import android.view.MenuItem
 import android.view.SubMenu
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
@@ -41,6 +45,7 @@ import java.nio.charset.Charset
 
 class TextEditorFragment : Fragment(), ConfirmReloadDialogFragment.Listener,
     ConfirmCloseDialogFragment.Listener {
+
     private val args by args<Args>()
     private lateinit var argsFile: Path
 
@@ -54,6 +59,11 @@ class TextEditorFragment : Fragment(), ConfirmReloadDialogFragment.Listener,
 
     private var isSettingText = false
 
+    // ──────────────────── 搜索状态 ────────────────────
+    private val searchHelper = TextEditorSearchHelper()
+    private var searchBarVisible = false
+    // ──────────────────────────────────────────────────
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -62,12 +72,17 @@ class TextEditorFragment : Fragment(), ConfirmReloadDialogFragment.Listener,
         lifecycleScope.launchWhenStarted {
             onBackPressedCallback = object : OnBackPressedCallback(false) {
                 override fun handleOnBackPressed() {
-                    ConfirmCloseDialogFragment.show(this@TextEditorFragment)
+                    if (searchBarVisible) {
+                        closeSearch()
+                    } else {
+                        ConfirmCloseDialogFragment.show(this@TextEditorFragment)
+                    }
                 }
             }
             launch {
                 viewModel.isTextChanged.collect {
-                    onBackPressedCallback.isEnabled = viewModel.isTextChanged.value
+                    onBackPressedCallback.isEnabled =
+                        viewModel.isTextChanged.value || searchBarVisible
                 }
             }
             addOnBackPressedCallback(onBackPressedCallback)
@@ -122,11 +137,139 @@ class TextEditorFragment : Fragment(), ConfirmReloadDialogFragment.Listener,
             if (viewModel.textState.value !is DataState.Success) {
                 return@doAfterTextChanged
             }
+            // 用户修改了文本 → 清空搜索
+            if (searchHelper.isActive) {
+                clearSearchHighlights()
+                searchHelper.clear()
+                updateSearchMatchCount()
+            }
             viewModel.isTextChanged.value = true
         }
 
-        // TODO: Request storage permission if not granted.
+        // ──────────── 搜索栏事件绑定 ────────────
+        setupSearchBar()
+        // ──────────────────────────────────────────
     }
+
+    // ──────────────────── 搜索设置 ────────────────────
+    private fun setupSearchBar() {
+        // 关闭按钮
+        binding.searchCloseButton.setOnClickListener { closeSearch() }
+
+        // 文本变化监听
+        binding.searchEdit.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                performSearch(s?.toString() ?: "")
+            }
+        })
+
+        // 键盘搜索动作
+        binding.searchEdit.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                performSearch(binding.searchEdit.text?.toString() ?: "")
+                true
+            } else false
+        }
+
+        // 导航按钮
+        binding.searchPreviousButton.setOnClickListener { navigateMatch(forward = false) }
+        binding.searchNextButton.setOnClickListener { navigateMatch(forward = true) }
+    }
+
+    private fun openSearch() {
+        searchBarVisible = true
+        binding.searchBar.fadeInUnsafe()
+        binding.searchEdit.requestFocus()
+        // 恢复上次搜索词（如有）
+        if (searchHelper.isActive) {
+            binding.searchEdit.setText(
+                binding.searchEdit.text?.toString()?.ifEmpty { searchLastQuery }
+            )
+            binding.searchEdit.setSelection(binding.searchEdit.text?.length ?: 0)
+        }
+        onBackPressedCallback.isEnabled = true
+    }
+
+    private var searchLastQuery = ""
+
+    private fun closeSearch() {
+        searchBarVisible = false
+        binding.searchBar.fadeOutUnsafe()
+        binding.searchEdit.clearFocus()
+        clearSearchHighlights()
+        searchLastQuery = binding.searchEdit.text?.toString() ?: ""
+        searchHelper.clear()
+        updateSearchMatchCount()
+        onBackPressedCallback.isEnabled = viewModel.isTextChanged.value
+    }
+
+    private fun performSearch(query: String) {
+        searchLastQuery = query
+        val text = binding.textEdit.text ?: return
+        val count = searchHelper.search(text, query)
+        updateSearchMatchCount()
+
+        if (count > 0) {
+            applySearchHighlights()
+            val match = searchHelper.currentMatch()
+            if (match != null) {
+                scrollToMatch(match)
+            }
+        } else {
+            clearSearchHighlights()
+        }
+    }
+
+    private fun navigateMatch(forward: Boolean) {
+        val match = if (forward) searchHelper.nextMatch() else searchHelper.previousMatch()
+        if (match != null) {
+            applySearchHighlights()
+            scrollToMatch(match)
+        }
+    }
+
+    private fun scrollToMatch(range: IntRange) {
+        val editText = binding.textEdit
+        // 将光标移动到匹配起始位置，以便 EditText 自动滚动到对应行
+        editText.setSelection(range.first)
+        val layout = editText.layout ?: return
+        val line = layout.getLineForOffset(range.first)
+        val y = layout.getLineTop(line)
+        binding.scrollView.smoothScrollTo(0, y.coerceAtLeast(0))
+    }
+
+    private fun applySearchHighlights() {
+        val editable = binding.textEdit.text ?: return
+        TextEditorSearchHelper.applyHighlights(
+            editable,
+            searchHelper.matchPositions,
+            searchHelper.currentIndex
+        )
+    }
+
+    private fun clearSearchHighlights() {
+        val editable = binding.textEdit.text ?: return
+        TextEditorSearchHelper.clearHighlights(editable)
+    }
+
+    private fun updateSearchMatchCount() {
+        val count = searchHelper.matchCount
+        binding.searchMatchCount.visibility = if (searchHelper.isActive) View.VISIBLE else View.GONE
+        if (searchHelper.isActive) {
+            if (count == 0) {
+                binding.searchMatchCount.text = getString(R.string.search_no_matches)
+            } else {
+                binding.searchMatchCount.text = getString(
+                    R.string.search_match_count_format,
+                    searchHelper.currentIndex + 1,
+                    count
+                )
+            }
+        }
+    }
+    // ────────────────── 搜索结束 ────────────────────────
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -134,6 +277,7 @@ class TextEditorFragment : Fragment(), ConfirmReloadDialogFragment.Listener,
         viewModel.setEditTextSavedState(binding.textEdit.onSaveInstanceState())
     }
 
+    // ────────────── 选项菜单 ──────────────
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
 
@@ -145,12 +289,17 @@ class TextEditorFragment : Fragment(), ConfirmReloadDialogFragment.Listener,
 
         updateSaveMenuItem()
         updateEncodingMenuItems()
+        updateSearchMenuItem()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
         when (item.itemId) {
             R.id.action_save -> {
                 save()
+                true
+            }
+            R.id.action_search -> {
+                openSearch()
                 true
             }
             R.id.action_reload -> {
@@ -163,6 +312,13 @@ class TextEditorFragment : Fragment(), ConfirmReloadDialogFragment.Listener,
             }
             else -> super.onOptionsItemSelected(item)
         }
+
+    private fun updateSearchMenuItem() {
+        if (!this::menuBinding.isInitialized) return
+        // 文本尚未加载完成时禁用搜索
+        menuBinding.searchItem.isEnabled =
+            viewModel.textState.value is DataState.Success
+    }
 
     fun onSupportNavigateUp(): Boolean {
         if (onBackPressedCallback.isEnabled) {
@@ -192,6 +348,9 @@ class TextEditorFragment : Fragment(), ConfirmReloadDialogFragment.Listener,
 
     private fun onTextStateChanged(state: DataState<String>) {
         updateTitle()
+        updateSearchMenuItem()
+        // 加载新文件时关闭搜索
+        if (searchBarVisible) closeSearch()
         when (state) {
             is DataState.Loading -> {
                 binding.progress.fadeInUnsafe()
@@ -221,6 +380,10 @@ class TextEditorFragment : Fragment(), ConfirmReloadDialogFragment.Listener,
         binding.textEdit.setText(text)
         isSettingText = false
         viewModel.isTextChanged.value = false
+        // 新文本 → 清空搜索高亮
+        clearSearchHighlights()
+        searchHelper.clear()
+        updateSearchMatchCount()
     }
 
     private fun onIsTextChangedChanged(changed: Boolean) {
@@ -283,6 +446,7 @@ class TextEditorFragment : Fragment(), ConfirmReloadDialogFragment.Listener,
     private class MenuBinding private constructor(
         val menu: Menu,
         val saveItem: MenuItem,
+        val searchItem: MenuItem,
         val encodingSubMenu: SubMenu
     ) {
         companion object {
@@ -295,7 +459,12 @@ class TextEditorFragment : Fragment(), ConfirmReloadDialogFragment.Listener,
                         .titleCondensed = charsetName
                 }
                 encodingSubMenu.setGroupCheckable(Menu.NONE, true, true)
-                return MenuBinding(menu, menu.findItem(R.id.action_save), encodingSubMenu)
+                return MenuBinding(
+                    menu,
+                    menu.findItem(R.id.action_save),
+                    menu.findItem(R.id.action_search),
+                    encodingSubMenu
+                )
             }
         }
     }

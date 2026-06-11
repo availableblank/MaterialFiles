@@ -8,6 +8,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -31,6 +32,72 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!-- ──────────────── 搜索栏 ──────────────── -->
+        <LinearLayout
+            android:id="@+id/searchBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="4dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:visibility="gone"
+            android:background="?colorSurface"
+            android:elevation="4dp"
+            tools:visibility="visible">
+
+            <ImageButton
+                android:id="@+id/searchCloseButton"
+                style="?borderlessButtonStyle"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/search_close"
+                android:src="@drawable/close_icon_control_normal_24dp" />
+
+            <EditText
+                android:id="@+id/searchEdit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="@string/search_hint"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:singleLine="true"
+                android:textAppearance="?textAppearanceBody1" />
+
+            <TextView
+                android:id="@+id/searchMatchCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:textAppearance="?textAppearanceBody2"
+                android:visibility="gone"
+                tools:text="1/5"
+                tools:visibility="visible" />
+
+            <ImageButton
+                android:id="@+id/searchPreviousButton"
+                style="?borderlessButtonStyle"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/search_previous"
+                android:src="@drawable/arrow_up_icon_control_normal_24dp" />
+
+            <ImageButton
+                android:id="@+id/searchNextButton"
+                style="?borderlessButtonStyle"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/search_next"
+                android:src="@drawable/arrow_down_icon_control_normal_24dp" />
+        </LinearLayout>
+        <!-- ──────────────── 搜索栏结束 ──────────────── -->
+
         <ProgressBar
             android:id="@+id/progress"
             android:layout_width="wrap_content"
@@ -51,7 +118,7 @@
             android:visibility="gone"
             app:drawableTopCompat="@drawable/error_icon_240dp" />
 
-        <!-- TODO: Use a WebView for large amount of text. -->
+        <!-- TODO: 未来可能使用 WebView 处理大文本。 -->
         <me.zhanghai.android.fastscroll.FastScrollNestedScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
