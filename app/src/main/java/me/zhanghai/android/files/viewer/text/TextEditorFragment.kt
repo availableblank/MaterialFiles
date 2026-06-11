@@ -299,7 +299,11 @@ class TextEditorFragment : Fragment(), ConfirmReloadDialogFragment.Listener,
                 true
             }
             R.id.action_search -> {
+                if (searchBarVisible) {
+                closeSearch()
+                } else {
                 openSearch()
+                }
                 true
             }
             R.id.action_reload -> {
