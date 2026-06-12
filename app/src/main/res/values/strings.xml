@@ -707,13 +707,13 @@
     <string name="text_editor_reload_message">Are you sure you want to reload? Unsaved changes to this document will be lost.</string>
     <string name="text_editor_encoding">Encoding</string>
     <string name="text_editor_close_message">Are you sure you want to discard unsaved changes to this document?</string>
-    <string name="search_find">Search</string>
-    <string name="search_hint">Search in File</string>
-    <string name="search_next">Next Result</string>
-    <string name="search_previous">Previous Result</string>
-    <string name="search_close">Close</string>
-    <string name="search_no_matches">No Result</string>
-    <string name="search_match_count_format">%1$d/%2$d</string>
+    <string name="text_search_find">Search</string>
+    <string name="text_search_hint">Search in File</string>
+    <string name="text_search_next">Next Result</string>
+    <string name="text_search_previous">Previous Result</string>
+    <string name="text_search_close">Close</string>
+    <string name="text_search_no_matches">No Result</string>
+    <string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">FTP server</string>
     <string name="ftp_server_state_title">Status</string>

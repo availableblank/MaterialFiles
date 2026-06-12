@@ -58,7 +58,7 @@
                     style="?borderlessButtonStyle"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:contentDescription="@string/search_close"
+                    android:contentDescription="@string/text_search_close"
                     android:src="@drawable/close_icon_control_normal_24dp" />
 
                 <EditText
@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:hint="@string/search_hint"
+                    android:hint="@string/text_search_hint"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:singleLine="true"
@@ -89,7 +89,7 @@
                     style="?borderlessButtonStyle"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:contentDescription="@string/search_previous"
+                    android:contentDescription="@string/text_search_previous"
                     android:src="@drawable/arrow_up_icon_control_normal_24dp" />
 
                 <ImageButton
@@ -97,7 +97,7 @@
                     style="?borderlessButtonStyle"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:contentDescription="@string/search_next"
+                    android:contentDescription="@string/text_search_next"
                     android:src="@drawable/arrow_down_icon_control_normal_24dp" />
             </LinearLayout>
             <!-- ──────────────── 搜索栏结束 ──────────────── -->

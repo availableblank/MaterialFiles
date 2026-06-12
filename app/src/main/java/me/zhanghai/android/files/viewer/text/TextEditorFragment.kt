@@ -259,10 +259,10 @@ class TextEditorFragment : Fragment(), ConfirmReloadDialogFragment.Listener,
         binding.searchMatchCount.visibility = if (searchHelper.isActive) View.VISIBLE else View.GONE
         if (searchHelper.isActive) {
             if (count == 0) {
-                binding.searchMatchCount.text = getString(R.string.search_no_matches)
+                binding.searchMatchCount.text = getString(R.string.text_search_no_matches)
             } else {
                 binding.searchMatchCount.text = getString(
-                    R.string.search_match_count_format,
+                    R.string.text_search_match_count_format,
                     searchHelper.currentIndex + 1,
                     count
                 )
