@@ -15,7 +15,8 @@ interface RootablePath {
 }
 
 private val rootStrategy: RootStrategy
-    get() = if (isRunningAsRoot) RootStrategy.NEVER else Settings.ROOT_STRATEGY.valueCompat
+    get() = if (isRunningAsRoot || isInRemoteProcess) RootStrategy.NEVER
+            else Settings.ROOT_STRATEGY.valueCompat
 
 @Throws(IOException::class)
 fun <T, R> callRootable(
@@ -53,7 +54,8 @@ fun <T, R> callRootable(
             localObject.block()
         RootStrategy.AUTOMATIC ->
             if (path1.isRootRequired(isAttributeAccess)
-                || path2.isRootRequired(isAttributeAccess)) {
+                || path2.isRootRequired(isAttributeAccess)
+            ) {
                 rootObject.block()
             } else {
                 localObject.block()
