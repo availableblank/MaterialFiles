@@ -36,7 +36,7 @@ object FileSystemProviders {
     fun install() {
         FileSystemProvider.installDefaultProvider(LinuxFileSystemProvider)
         FileSystemProvider.installProvider(ArchiveFileSystemProvider)
-        if (!isRunningAsRoot) {
+        if (!isRunningAsRoot && !isInRemoteProcess) {
             FileSystemProvider.installProvider(ContentFileSystemProvider)
             FileSystemProvider.installProvider(DocumentFileSystemProvider)
             FileSystemProvider.installProvider(FtpFileSystemProvider)
