@@ -233,6 +233,11 @@
     <string name="file_open_as_type_video">Video</string>
     <string name="file_open_as_type_directory">Folder</string>
     <string name="file_open_as_type_any">Other</string>
+    <string name="file_open_unknown_title">打开方式</string>
+    <string name="file_open_unknown_image_viewer">使用图片查看器打开</string>
+    <string name="file_open_unknown_text_editor">使用文本编辑器打开</string> 
+    <string name="file_open_unknown_archive_viewer">使用归档文件查看器打开</string>
+    <string name="file_open_unknown_external_app">使用外部应用打开</string>
     <string name="file_install_apk_from_background_title_format">“%1$s” is ready to be installed</string>
     <string name="file_install_apk_from_background_text">Tap to install</string>
     <string name="file_open_from_background_title_format">“%1$s” is ready to be opened</string>
