@@ -388,6 +388,13 @@
             android:authorities="@string/file_provider_authority"
             android:exported="false"
             android:grantUriPermissions="true" />
+        
+        <provider
+            android:name="rikka.shizuku.ShizukuProvider"
+            android:authorities="${applicationId}.shizuku"
+            android:enabled="true"
+            android:exported="true"
+            android:multiprocess="true" />
 
         <receiver android:name="me.zhanghai.android.files.filejob.FileJobReceiver" />
 
