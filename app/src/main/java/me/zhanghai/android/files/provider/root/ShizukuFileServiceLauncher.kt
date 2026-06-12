@@ -10,6 +10,7 @@ import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.annotation.Keep
 import androidx.annotation.RequiresApi
 import kotlinx.coroutines.TimeoutCancellationException
@@ -27,13 +28,28 @@ import kotlin.coroutines.resumeWithException
 
 object ShizukuFileServiceLauncher {
     private val lock = Any()
+    private val LOG_TAG = ShizukuFileServiceLauncher::class.java.simpleName
 
-    fun isShizukuAvailable(): Boolean =
-        try {
-            Shizuku.pingBinder()
-        } catch (e: Exception) {
-            false
+    private var isShizukuInitialized = false
+
+    fun isShizukuAvailable(): Boolean {
+        synchronized(lock) {
+            if (!isShizukuInitialized) {
+                try {
+                    Shizuku.newProcess()
+                } catch (e: Exception) {
+                    Log.w(LOG_TAG, "Shizuku.newProcess() failed", e)
+                }
+                isShizukuInitialized = true
+            }
+            return try {
+                Shizuku.pingBinder()
+            } catch (e: Exception) {
+                Log.w(LOG_TAG, "Shizuku.pingBinder() failed", e)
+                false
+            }
         }
+    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     @Throws(RemoteFileSystemException::class)
@@ -43,6 +59,7 @@ object ShizukuFileServiceLauncher {
                 throw RemoteFileSystemException("Shizuku isn't available")
             }
             if (Shizuku.checkSelfPermission() != PackageManager.PERMISSION_GRANTED) {
+                Log.i(LOG_TAG, "Requesting Shizuku permission")
                 val granted = try {
                     runBlocking<Boolean> {
                         suspendCancellableCoroutine { continuation ->
@@ -52,7 +69,12 @@ object ShizukuFileServiceLauncher {
                                     grantResult: Int
                                 ) {
                                     Shizuku.removeRequestPermissionResultListener(this)
-                                    val granted = grantResult == PackageManager.PERMISSION_GRANTED
+                                    val granted =
+                                        grantResult == PackageManager.PERMISSION_GRANTED
+                                    Log.i(
+                                        LOG_TAG,
+                                        "Shizuku permission result: $granted"
+                                    )
                                     continuation.resume(granted)
                                 }
                             }
@@ -70,6 +92,7 @@ object ShizukuFileServiceLauncher {
                     throw RemoteFileSystemException("Shizuku permission isn't granted")
                 }
             }
+            Log.i(LOG_TAG, "Launching Shizuku user service")
             return try {
                 runBlocking {
                     try {
