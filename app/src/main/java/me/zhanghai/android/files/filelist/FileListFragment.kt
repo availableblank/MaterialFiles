@@ -136,7 +136,7 @@
         ShowRequestNotificationPermissionRationaleDialogFragment.Listener,
         ShowRequestNotificationPermissionInSettingsRationaleDialogFragment.Listener,
         ShowRequestStoragePermissionRationaleDialogFragment.Listener,
-        ShowRequestStoragePermissionInSettingsRationaleDialogFragment.Listener {
+        ShowRequestStoragePermissionInSettingsRationaleDialogFragment.Listener,OpenUnknownFileDialogFragment.Listener {
         private val requestAllFilesAccessLauncher = registerForActivityResult(
             RequestAllFilesAccessContract(), this::onRequestAllFilesAccessResult
         )
@@ -1192,30 +1192,69 @@
             viewModel.selectFiles(files, selected)
         }
     
-    override fun openFile(file: FileItem) {
-        val pickOptions = viewModel.pickOptions
-        if (pickOptions != null) {
-            if (file.attributes.isDirectory) {
-                navigateTo(file.path)
-            } else {
-                when (pickOptions.mode) {
-                    PickOptions.Mode.OPEN_FILE -> pickFiles(fileItemSetOf(file))
-                    PickOptions.Mode.CREATE_FILE -> confirmReplaceFile(file)
-                    PickOptions.Mode.OPEN_DIRECTORY -> {}
-                }
+override fun openFile(file: FileItem) {
+    val pickOptions = viewModel.pickOptions
+    if (pickOptions != null) {
+        if (file.attributes.isDirectory) {
+            navigateTo(file.path)
+        } else {
+            when (pickOptions.mode) {
+                PickOptions.Mode.OPEN_FILE -> pickFiles(fileItemSetOf(file))
+                PickOptions.Mode.CREATE_FILE -> confirmReplaceFile(file)
+                PickOptions.Mode.OPEN_DIRECTORY -> {}
             }
-            return
         }
-        if (file.mimeType.isApk) {
-            openApk(file)
-            return
-        }
-        if (file.isListable) {
-            navigateTo(file.listablePath)
-            return
-        }
-        FileOpener.openFileWithIntent(file.path, file.mimeType, requireContext(), adapter, false)
+        return
     }
+    if (file.mimeType.isApk) {
+        openApk(file)
+        return
+    }
+    if (file.isListable) {
+        navigateTo(file.listablePath)
+        return
+    }
+    // ── 已知类型直接打开 ──────────────────────────────────────────
+    if (file.path.isArchivePath
+        || file.mimeType.isImageType()
+        || file.mimeType.isTextType()
+    ) {
+        FileOpener.openFileWithIntent(
+            file.path, file.mimeType, requireContext(), adapter, false
+        )
+        return
+    }
+    // ── 未知类型弹出选择对话框 ─────────────────────────────────────
+    OpenUnknownFileDialogFragment.show(file, this)
+}
+
+override fun openUnknownWithImageViewer(file: FileItem) {
+    FileOpener.openWithImageViewer(file.path, file.mimeType, adapter, requireContext())
+}
+
+override fun openUnknownWithTextEditor(file: FileItem) {
+    FileOpener.openText(file.path, requireContext())
+}
+
+override fun openUnknownWithArchiveViewer(file: FileItem) {
+    if (file.isListable) {
+        navigateTo(file.listablePath)
+    } else {
+        FileJobService.open(file.path, file.mimeType, false, requireContext())
+    }
+}
+
+override fun openUnknownWithExternalApp(file: FileItem) {
+    val intent = file.path.fileProviderUri.createViewIntent(file.mimeType)
+        .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+        .apply {
+            extraPath = file.path
+            if (adapter != null) {
+                FileOpener.putImageViewerExtras(this, file.path, file.mimeType, adapter)
+            }
+        }
+    requireContext().startActivitySafe(intent)
+}
     
         private fun openApk(file: FileItem) {
             if (!file.isListable) {
@@ -1254,17 +1293,6 @@
             withChooser = true
         )
     }
-    
-    private fun MimeType.isTextType(): Boolean =
-        value.startsWith("text/") ||
-        value in listOf(
-            "application/json",
-            "application/xml",
-            "application/javascript",
-            "application/xhtml+xml",
-            "application/x-sh",
-            "application/x-shellscript",
-        )
     
         override fun cutFile(file: FileItem) {
             cutFiles(fileItemSetOf(file))
