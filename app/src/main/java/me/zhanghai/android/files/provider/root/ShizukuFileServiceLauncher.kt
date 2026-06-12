@@ -28,12 +28,17 @@ import kotlin.coroutines.resumeWithException
 object ShizukuFileServiceLauncher {
     private val lock = Any()
 
-    fun isShizukuAvailable(): Boolean =
-        try {
+    fun isShizukuAvailable(): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return false
+        }
+        return try {
+            // Shizuku.pingBinder() is deprecated in v13, use binder directly
             Shizuku.pingBinder()
         } catch (e: Exception) {
             false
         }
+    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     @Throws(RemoteFileSystemException::class)
@@ -46,6 +51,7 @@ object ShizukuFileServiceLauncher {
                 val granted = try {
                     runBlocking<Boolean> {
                         suspendCancellableCoroutine { continuation ->
+                            val requestCode = 0
                             val listener = object : Shizuku.OnRequestPermissionResultListener {
                                 override fun onRequestPermissionResult(
                                     requestCode: Int,
@@ -60,7 +66,7 @@ object ShizukuFileServiceLauncher {
                             continuation.invokeOnCancellation {
                                 Shizuku.removeRequestPermissionResultListener(listener)
                             }
-                            Shizuku.requestPermission(listener.hashCode())
+                            Shizuku.requestPermission(requestCode)
                         }
                     }
                 } catch (e: InterruptedException) {
