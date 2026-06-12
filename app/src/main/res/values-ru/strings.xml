@@ -653,6 +653,13 @@
     <string name="text_editor_reload_message">Вы уверены что хотите перезагрузить? Несохраненные изменения в  документе будут потеряны.</string>
     <string name="text_editor_encoding">Кодировка</string>
     <string name="text_editor_close_message">Вы уверены что хотите отказаться от несохраненных изменений в документе?</string>
+	<string name="text_search_find">Найти</string>
+	<string name="text_search_hint">Поиск в файле</string>
+	<string name="text_search_next">Следующий результат</string>
+	<string name="text_search_previous">Предыдущий результат</string>
+	<string name="text_search_close">Закрыть</string>
+	<string name="text_search_no_matches">Нет результатов</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">FTP-сервер</string>
     <string name="ftp_server_state_title">Статус</string>

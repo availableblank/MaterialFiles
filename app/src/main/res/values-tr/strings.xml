@@ -471,6 +471,13 @@
     <string name="text_editor_reload_message">Yeniden yüklemek istediğinizden emin misiniz? Bu belgedeki kaydedilmemiş değişiklikler kaybedilecek.</string>
     <string name="text_editor_encoding">Kodlama</string>
     <string name="text_editor_close_message">Bu belgedeki kaydedilmemiş değişiklikleri atmak istediğinizden emin misiniz?</string>
+	<string name="text_search_find">Ara</string>
+	<string name="text_search_hint">Dosyada ara</string>
+	<string name="text_search_next">Sonraki sonuç</string>
+	<string name="text_search_previous">Önceki sonuç</string>
+	<string name="text_search_close">Kapat</string>
+	<string name="text_search_no_matches">Sonuç bulunamadı</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">FTP sunucusu</string>
     <string name="ftp_server_state_title">Durum</string>

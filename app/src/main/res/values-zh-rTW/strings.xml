@@ -561,6 +561,13 @@
     <string name="text_editor_reload_message">您確定要重新載入嗎？對此文件未儲存的變更將丟失。</string>
     <string name="text_editor_encoding">編碼</string>
     <string name="text_editor_close_message">您確定要捨棄對此文件未儲存的變更嗎？</string>
+	<string name="text_search_find">搜尋</string>
+	<string name="text_search_hint">在檔案中搜尋</string>
+	<string name="text_search_next">下一個結果</string>
+	<string name="text_search_previous">上一個結果</string>
+	<string name="text_search_close">關閉</string>
+	<string name="text_search_no_matches">沒有符合的項目</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">FTP 伺服器</string>
     <string name="ftp_server_state_title">狀態</string>

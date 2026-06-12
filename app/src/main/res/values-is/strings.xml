@@ -593,6 +593,13 @@
     <string name="text_editor_reload_message">Ertu viss um að þú viljir endurhlaða? Óvistaðar breytingar á þessu skjali munu tapast.</string>
     <string name="text_editor_encoding">Kóðun</string>
     <string name="text_editor_close_message">Ertu viss um að þú viljir henda óvistuðum breytingum á þessu skjali?</string>
+	<string name="text_search_find">Leita</string>
+	<string name="text_search_hint">Leita í skrá</string>
+	<string name="text_search_next">Næsta niðurstaða</string>
+	<string name="text_search_previous">Fyrri niðurstaða</string>
+	<string name="text_search_close">Loka</string>
+	<string name="text_search_no_matches">Engar niðurstöður</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">FTP-netþjónn</string>
     <string name="ftp_server_state_title">Staða</string>

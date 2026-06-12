@@ -462,6 +462,13 @@
     <string name="text_editor_reload_message">Bạn có chắc chắn muốn tải lại không? Những thay đổi chưa lưu sẽ bị mất.</string>
     <string name="text_editor_encoding">Bảng mã kí tự</string>
     <string name="text_editor_close_message">Bạn có chắc chắn muốn huỷ bỏ những thay đổi chưa lưu đối với tài liệu này?</string>
+	<string name="text_search_find">Tìm kiếm</string>
+	<string name="text_search_hint">Tìm kiếm trong tệp</string>
+	<string name="text_search_next">Kết quả tiếp theo</string>
+	<string name="text_search_previous">Kết quả trước đó</string>
+	<string name="text_search_close">Đóng</string>
+	<string name="text_search_no_matches">Không có kết quả</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">Máy chủ FTP</string>
     <string name="ftp_server_state_title">Trạng thái</string>

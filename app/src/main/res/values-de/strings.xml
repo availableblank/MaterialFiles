@@ -591,6 +591,13 @@
     <string name="text_editor_reload_message">Soll wirklich neu geladen werden? Alle nicht gespeicherten Änderungen gehen verloren.</string>
     <string name="text_editor_encoding">Kodierung</string>
     <string name="text_editor_close_message">Sollen alle ungespeicherten Änderungen verworfen werden?</string>
+	<string name="text_search_find">Suchen</string>
+	<string name="text_search_hint">In Datei suchen</string>
+	<string name="text_search_next">Nächstes Ergebnis</string>
+	<string name="text_search_previous">Vorheriges Ergebnis</string>
+	<string name="text_search_close">Schließen</string>
+	<string name="text_search_no_matches">Keine Ergebnisse</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">FTP-Server</string>
     <string name="ftp_server_state_title">Status</string>

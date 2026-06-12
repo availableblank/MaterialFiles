@@ -712,7 +712,7 @@
     <string name="text_search_next">Next Result</string>
     <string name="text_search_previous">Previous Result</string>
     <string name="text_search_close">Close</string>
-    <string name="text_search_no_matches">No Result</string>
+    <string name="text_search_no_matches">No Results</string>
     <string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">FTP server</string>

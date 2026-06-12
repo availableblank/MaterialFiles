@@ -312,6 +312,13 @@
     <string name="text_editor_save_success">Gordeta</string>
     <string name="text_editor_reload_message">Ziur birkargatu nahi duzula? Dokumentu honi egindako gorde gabeko aldaketak galduko dira.</string>
     <string name="text_editor_close_message">Ziur dokumentu honi egindako gorde gabeko aldaketak baztertu nahi dituzula?</string>
+	<string name="text_search_find">Bilatu</string>
+	<string name="text_search_hint">Bilatu fitxategian</string>
+	<string name="text_search_next">Hurrengo emaitza</string>
+	<string name="text_search_previous">Aurreko emaitza</string>
+	<string name="text_search_close">Itxi</string>
+	<string name="text_search_no_matches">Emaitzarik ez</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">FTP zerbitzaria</string>
     <string name="ftp_server_state_title">Egoera</string>

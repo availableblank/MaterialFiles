@@ -621,6 +621,13 @@
     <string name="text_editor_reload_message">¿Está seguro de recargar? Los cambios que no se hayan guardado en el documento se perderán.</string>
     <string name="text_editor_encoding">Codificación</string>
     <string name="text_editor_close_message">¿Está seguro de que quiere descartar los cambios sin guardar en el documento?</string>
+	<string name="text_search_find">Buscar</string>
+	<string name="text_search_hint">Buscar en archivo</string>
+	<string name="text_search_next">Resultado siguiente</string>
+	<string name="text_search_previous">Resultado anterior</string>
+	<string name="text_search_close">Cerrar</string>
+	<string name="text_search_no_matches">Sin resultados</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">Servidor FTP</string>
     <string name="ftp_server_state_title">Estado</string>

@@ -651,6 +651,13 @@
     <string name="text_editor_reload_message">Czy na pewno chcesz załadować ponownie? Niezapisane zmiany w tym dokumencie zostaną utracone.</string>
     <string name="text_editor_encoding">Kodowanie</string>
     <string name="text_editor_close_message">Czy na pewno chcesz porzucić niezapisane zmiany w tym dokumencie?</string>
+	<string name="text_search_find">Szukaj</string>
+	<string name="text_search_hint">Szukaj w pliku</string>
+	<string name="text_search_next">Następny wynik</string>
+	<string name="text_search_previous">Poprzedni wynik</string>
+	<string name="text_search_close">Zamknij</string>
+	<string name="text_search_no_matches">Brak wyników</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">Serwer FTP</string>
     <string name="ftp_server_state_title">Status</string>

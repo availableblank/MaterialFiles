@@ -479,6 +479,13 @@
     <string name="text_editor_reload_message">Haluatko varmasti ladata tiedoston uudelleen? Tallentamattomat muutokset häviävät.</string>
     <string name="text_editor_encoding">Merkistökoodaus</string>
     <string name="text_editor_close_message">Haluatko varmasti hylätä tiedoston tallentamattomat muutokset?</string>
+	<string name="text_search_find">Etsi</string>
+	<string name="text_search_hint">Etsi tiedostosta</string>
+	<string name="text_search_next">Seuraava tulos</string>
+	<string name="text_search_previous">Edellinen tulos</string>
+	<string name="text_search_close">Sulje</string>
+	<string name="text_search_no_matches">Ei tuloksia</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">FTP-palvelin</string>
     <string name="ftp_server_state_title">Tila</string>

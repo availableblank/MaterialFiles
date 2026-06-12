@@ -576,6 +576,13 @@
     <string name="text_editor_reload_message">Сигурни ли сте, че желаете да презаредите? Незапазените промени в документа ще бъдат загубени.</string>
     <string name="text_editor_encoding">Кодиране на знаците</string>
     <string name="text_editor_close_message">Сигурни ли сте, че желаете да отхвърлите незапазените промени в документа?</string>
+	<string name="text_search_find">Търсене</string>
+	<string name="text_search_hint">Търсене във файла</string>
+	<string name="text_search_next">Следващ резултат</string>
+	<string name="text_search_previous">Предишен резултат</string>
+	<string name="text_search_close">Затваряне</string>
+	<string name="text_search_no_matches">Няма резултати</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">Сървър за FTP</string>
     <string name="ftp_server_state_title">Състояние</string>

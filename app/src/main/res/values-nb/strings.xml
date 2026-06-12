@@ -591,6 +591,13 @@
     <string name="text_editor_reload_message">Er du sikker på at du vil laste inn på nytt? Ulagrede endringer i dette dokumentet vil gå tapt.</string>
     <string name="text_editor_encoding">Tegnkoding</string>
     <string name="text_editor_close_message">Er du sikker på at du vil forkaste de ulagrede endringene i dette dokumentet?</string>
+	<string name="text_search_find">Søk</string>
+	<string name="text_search_hint">Søk i fil</string>
+	<string name="text_search_next">Neste resultat</string>
+	<string name="text_search_previous">Forrige resultat</string>
+	<string name="text_search_close">Lukk</string>
+	<string name="text_search_no_matches">Ingen resultater</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">FTP-tjener</string>
     <string name="ftp_server_state_title">Status</string>

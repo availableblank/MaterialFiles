@@ -621,6 +621,13 @@
     <string name="text_editor_reload_message">Sei sicuro di volere ricaricare? Le modifiche a questo documento non salvate verranno perse.</string>
     <string name="text_editor_encoding">Codifica</string>
     <string name="text_editor_close_message">Sei sicuro di volere scartare le modifiche a questo documento non salvate?</string>
+	<string name="text_search_find">Cerca</string>
+	<string name="text_search_hint">Cerca nel file</string>
+	<string name="text_search_next">Risultato successivo</string>
+	<string name="text_search_previous">Risultato precedente</string>
+	<string name="text_search_close">Chiudi</string>
+	<string name="text_search_no_matches">Nessun risultato</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">Server FTP</string>
     <string name="ftp_server_state_title">Stato</string>

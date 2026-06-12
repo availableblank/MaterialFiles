@@ -651,6 +651,13 @@
     <string name="text_editor_reload_message">האם בוודאות ברצונך לטעון מחדש? שינויים שלא נשמרו במסמך זה יאבדו.</string>
     <string name="text_editor_encoding">הצפנה</string>
     <string name="text_editor_close_message">האם בוודאות ברצונך למחוק שינויים שלא נשמרו במסמך זה?</string>
+	<string name="text_search_find">חיפוש</string>
+	<string name="text_search_hint">חיפוש בקובץ</string>
+	<string name="text_search_next">התוצאה הבאה</string>
+	<string name="text_search_previous">התוצאה הקודמת</string>
+	<string name="text_search_close">סגירה</string>
+	<string name="text_search_no_matches">אין תוצאות</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">שרת FTP</string>
     <string name="ftp_server_state_title">סטטוס</string>

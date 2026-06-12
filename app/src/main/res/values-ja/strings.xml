@@ -561,6 +561,13 @@
     <string name="text_editor_reload_message">本当に再読み込みしますか？ このドキュメントの保存していない変更は破棄されます。</string>
     <string name="text_editor_encoding">エンコーディング</string>
     <string name="text_editor_close_message">本当にこのドキュメントの保存していない変更は破棄しますか？</string>
+	<string name="text_search_find">検索</string>
+	<string name="text_search_hint">ファイル内検索</string>
+	<string name="text_search_next">次の結果</string>
+	<string name="text_search_previous">前の結果</string>
+	<string name="text_search_close">閉じる</string>
+	<string name="text_search_no_matches">結果なし</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">FTP サーバー</string>
     <string name="ftp_server_state_title">状態</string>

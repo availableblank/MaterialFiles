@@ -591,6 +591,13 @@
     <string name="text_editor_reload_message">Σίγουρα θέλετε να επαναλάβετε τη φόρτωση; Οι μη αποθηκευμένες αλλαγές σε αυτό το έγγραφο θα χαθούν.</string>
     <string name="text_editor_encoding">Κωδικοποίηση</string>
     <string name="text_editor_close_message">Σίγουρα θέλετε να απορρίψετε τις μη αποθηκευμένες αλλαγές σε αυτό το έγγραφο;</string>
+	<string name="text_search_find">Αναζήτηση</string>
+	<string name="text_search_hint">Αναζήτηση στο αρχείο</string>
+	<string name="text_search_next">Επόμενο αποτέλεσμα</string>
+	<string name="text_search_previous">Προηγούμενο αποτέλεσμα</string>
+	<string name="text_search_close">Κλείσιμο</string>
+	<string name="text_search_no_matches">Κανένα αποτέλεσμα</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">Διακομιστής FTP</string>
     <string name="ftp_server_state_title">Κατάσταση</string>

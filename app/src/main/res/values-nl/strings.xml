@@ -591,6 +591,13 @@
     <string name="text_editor_reload_message">Weet je zeker dat je wilt herladen? Niet-opgeslagen wijzigingen gaan verloren.</string>
     <string name="text_editor_encoding">Versleuteling</string>
     <string name="text_editor_close_message">Weet je zeker dat je de niet-opgeslagen wijzigingen wilt verwerpen?</string>
+	<string name="text_search_find">Zoeken</string>
+	<string name="text_search_hint">Zoeken in bestand</string>
+	<string name="text_search_next">Volgend resultaat</string>
+	<string name="text_search_previous">Vorig resultaat</string>
+	<string name="text_search_close">Sluiten</string>
+	<string name="text_search_no_matches">Geen resultaten</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">FTP-server</string>
     <string name="ftp_server_state_title">Status</string>

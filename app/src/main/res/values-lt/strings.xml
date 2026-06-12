@@ -554,6 +554,13 @@
     <string name="text_editor_reload_message">Ar tikrai norite įkelti iš naujo? Neišsaugoti šio dokumento pakeitimai bus prarasti.</string>
     <string name="text_editor_encoding">Kodavimas</string>
     <string name="text_editor_close_message">Ar tikrai norite atmesti neišsaugotus šio dokumento pakeitimus?</string>
+	<string name="text_search_find">Ieškoti</string>
+	<string name="text_search_hint">Ieškoti faile</string>
+	<string name="text_search_next">Kitas rezultatas</string>
+	<string name="text_search_previous">Ankstesnis rezultatas</string>
+	<string name="text_search_close">Uždaryti</string>
+	<string name="text_search_no_matches">Nėra rezultatų</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">FTP serveris</string>
     <string name="ftp_server_state_title">Būsena</string>

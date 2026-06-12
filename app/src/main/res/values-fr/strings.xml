@@ -623,6 +623,13 @@
     <string name="text_editor_reload_message">Êtes-vous sûr de vouloir recharger ? Les modifications non enregistrées apportées à ce document seront perdues.</string>
     <string name="text_editor_encoding">Encodage</string>
     <string name="text_editor_close_message">Êtes-vous sûr de vouloir rejeter les modifications non enregistrées apportées à ce document ?</string>
+	<string name="text_search_find">Rechercher</string>
+	<string name="text_search_hint">Rechercher dans le fichier</string>
+	<string name="text_search_next">Résultat suivant</string>
+	<string name="text_search_previous">Résultat précédent</string>
+	<string name="text_search_close">Fermer</string>
+	<string name="text_search_no_matches">Aucun résultat</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">Serveur FTP</string>
     <string name="ftp_server_state_title">Status</string>

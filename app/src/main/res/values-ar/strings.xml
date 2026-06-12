@@ -711,6 +711,13 @@
     <string name="text_editor_reload_message">هل أنت متأكد أنك تريد إعادة التحميل؟ ستفقد التغييرات غير المحفوظة على هذا المستند.</string>
     <string name="text_editor_encoding">ترميز</string>
     <string name="text_editor_close_message">هل أنت متأكد أنك تريد تجاهل التغييرات غير المحفوظة في هذا المستند؟</string>
+	<string name="text_search_find">بحث</string>
+	<string name="text_search_hint">بحث في الملف</string>
+	<string name="text_search_next">النتيجة التالية</string>
+	<string name="text_search_previous">النتيجة السابقة</string>
+	<string name="text_search_close">غلق</string>
+	<string name="text_search_no_matches">لا توجد نتائج</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">خادم FTP </string>
     <string name="ftp_server_state_title">الحالة</string>

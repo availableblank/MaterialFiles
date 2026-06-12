@@ -492,7 +492,14 @@
     <string name="text_editor_reload_message">آیا مطمئن هستید که می‌خواهید دوباره بارگزاری کنید؟ تغییرات ذخیره نشده در این سند از بین خواهند رفت.</string>
     <string name="text_editor_encoding">رمزگذاری</string>
     <string name="text_editor_close_message">آیا مطمئن هستید که می‌خواهید تغییرات ذخیره نشده در این سند را دور بریزید؟</string>
-
+	<string name="text_search_find">جستجو</string>
+	<string name="text_search_hint">جستجو در فایل</string>
+	<string name="text_search_next">نتیجهٔ بعدی</string>
+	<string name="text_search_previous">نتیجهٔ قبلی</string>
+	<string name="text_search_close">بستن</string>
+	<string name="text_search_no_matches">نتیجه‌ای یافت نشد</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
+	
     <string name="ftp_server_title">کارساز اف‌تی‌پی</string>
     <string name="ftp_server_state_title">وضعیت</string>
     <string name="ftp_server_state_summary_starting">در حال شروع…</string>

@@ -532,6 +532,13 @@
     <string name="text_editor_reload_message">Esteu segur que voleu tornar-ho a carregar? Es perdran els canvis no desats en aquest document.</string>
     <string name="text_editor_encoding">Codificació</string>
     <string name="text_editor_close_message">Esteu segur que voleu descartar els canvis no desats en aquest document?</string>
+	<string name="text_search_find">Cerca</string>
+	<string name="text_search_hint">Cerca al fitxer</string>
+	<string name="text_search_next">Resultat següent</string>
+	<string name="text_search_previous">Resultat anterior</string>
+	<string name="text_search_close">Tanca</string>
+	<string name="text_search_no_matches">Cap resultat</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">Servidor FTP</string>
     <string name="ftp_server_state_title">Estat</string>

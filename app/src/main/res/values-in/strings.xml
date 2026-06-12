@@ -477,6 +477,13 @@
     <string name="text_editor_reload_message">Apakah Anda yakin ingin memuat ulang? Perubahan yang belum disimpan pada dokumen ini akan hilang.</string>
     <string name="text_editor_encoding">Enkode</string>
     <string name="text_editor_close_message">Apakah Anda yakin ingin menghapus perubahan yang belum disimpan pada dokumen ini?</string>
+	<string name="text_search_find">Cari</string>
+	<string name="text_search_hint">Cari di file</string>
+	<string name="text_search_next">Hasil berikutnya</string>
+	<string name="text_search_previous">Hasil sebelumnya</string>
+	<string name="text_search_close">Tutup</string>
+	<string name="text_search_no_matches">Tidak ada hasil</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">Server FTP</string>
     <string name="ftp_server_state_title">Status</string>

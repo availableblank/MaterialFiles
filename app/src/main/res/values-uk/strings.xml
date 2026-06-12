@@ -653,6 +653,13 @@
     <string name="text_editor_reload_message">Ви впевнені, що хочете перезавантажити? Незбережені зміни в цьому документі буде втрачено.</string>
     <string name="text_editor_encoding">Кодування</string>
     <string name="text_editor_close_message">Ви впевнені, що бажаєте скасувати незбережені зміни в цьому документі?</string>
+	<string name="text_search_find">Знайти</string>
+	<string name="text_search_hint">Пошук у файлі</string>
+	<string name="text_search_next">Наступний результат</string>
+	<string name="text_search_previous">Попередній результат</string>
+	<string name="text_search_close">Закрити</string>
+	<string name="text_search_no_matches">Немає результатів</string>
+	<string name="text_search_match_count_format">%1$d/%2$d</string>
 
     <string name="ftp_server_title">FTP-сервер</string>
     <string name="ftp_server_state_title">Стан</string>
