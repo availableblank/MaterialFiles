@@ -126,6 +126,7 @@
     import me.zhanghai.android.files.util.viewModels
     import me.zhanghai.android.files.util.withChooser
     import kotlin.math.roundToInt
+    import me.zhanghai.android.files.util.createViewIntent
     
     class FileListFragment : Fragment(), BreadcrumbLayout.Listener, FileListAdapter.Listener,
         ConfirmReplaceFileDialogFragment.Listener, OpenApkDialogFragment.Listener,
@@ -1232,30 +1233,30 @@ override fun openUnknownWithImageViewer(file: FileItem) {
     FileOpener.openWithImageViewer(file.path, file.mimeType, adapter, requireContext())
 }
 
-override fun openUnknownWithTextEditor(file: FileItem) {
-    FileOpener.openText(file.path, requireContext())
-}
-
-override fun openUnknownWithArchiveViewer(file: FileItem) {
-    if (file.isListable) {
-        navigateTo(file.listablePath)
-    } else {
-        FileJobService.open(file.path, file.mimeType, false, requireContext())
+    override fun openUnknownWithTextEditor(file: FileItem) {
+        FileOpener.openText(file.path, requireContext())
     }
-}
-
-override fun openUnknownWithExternalApp(file: FileItem) {
-    val intent = file.path.fileProviderUri.createViewIntent(file.mimeType)
-        .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-        .apply {
-            extraPath = file.path
-            if (adapter != null) {
-                FileOpener.putImageViewerExtras(this, file.path, file.mimeType, adapter)
-            }
-        }
-    requireContext().startActivitySafe(intent)
-}
     
+    override fun openUnknownWithArchiveViewer(file: FileItem) {
+        if (file.isListable) {
+            navigateTo(file.listablePath)
+        } else {
+            FileJobService.open(file.path, file.mimeType, false, requireContext())
+        }
+    }
+    
+    override fun openUnknownWithExternalApp(file: FileItem) {
+        val intent = file.path.fileProviderUri.createViewIntent(file.mimeType)
+            .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            .apply {
+                extraPath = file.path
+                if (adapter != null) {
+                    FileOpener.putImageViewerExtras(this, file.path, file.mimeType, adapter)
+                }
+            }
+        requireContext().startActivitySafe(intent)
+    }
+        
         private fun openApk(file: FileItem) {
             if (!file.isListable) {
                 installApk(file)
