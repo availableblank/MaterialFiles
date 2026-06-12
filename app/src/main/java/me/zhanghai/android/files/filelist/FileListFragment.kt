@@ -1,4 +1,4 @@
-/*
+    /*
      * Copyright (c) 2018 Hai Zhang <dreaming.in.code.zh@gmail.com>
      * All Rights Reserved.
      */
@@ -1253,13 +1253,6 @@
             file.path, file.mimeType, requireContext(), adapter,
             withChooser = true
         )
-    }
-    
-    
-    private fun openWithTextEditor(file: FileItem) {
-        val intent = Intent(requireContext(), TextEditorActivity::class.java)
-            .apply { extraPath = file.path }
-        startActivity(intent)
     }
     
     private fun MimeType.isTextType(): Boolean =
