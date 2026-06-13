@@ -25,6 +25,6 @@ class FileJobListActivity : AppActivity() {
     }
 
     companion object {
-        fun createIntent(): Intent = createIntent<FileJobListActivity>()
+        fun createIntent(): Intent = FileJobListActivity::class.createIntent()
     }
 }

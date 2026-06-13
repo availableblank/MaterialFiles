@@ -22,6 +22,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import me.zhanghai.android.files.compat.removeFirstCompat
 import me.zhanghai.android.files.compat.mainExecutorCompat
+import me.zhanghai.android.files.R
 
 class FileJobService : Service() {
     private lateinit var wakeWifiLock: WakeWifiLock
@@ -51,6 +52,21 @@ class FileJobService : Service() {
 
     private val jobCount: Int
         get() = synchronized(runningJobs) { runningJobs.size }
+
+    private fun startJob(job: FileJob) {
+        // Synchronize on runningJobs to prevent a job from removing itself before being added.
+        synchronized(runningJobs) {
+            val future = executorService.submit {
+                job.runOn(this)
+                synchronized(runningJobs) {
+                    runningJobs.remove(job)
+                    updateWakeWifiLockLocked()
+                }
+            }
+            runningJobs[job] = future
+            updateWakeWifiLockLocked()
+        }
+    }
 
     private fun cancelJob(id: Int) {
         synchronized(runningJobs) {

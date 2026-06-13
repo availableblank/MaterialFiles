@@ -14,8 +14,8 @@ abstract class FileJob {
     val id = Random().nextInt()
 
     internal lateinit var service: FileJobService
-	open val operationType: OperationType? = null
         private set
+	open val operationType: OperationType? = null
 
 	fun updateJobState(title: String, currentFileName: String, completedCount: Int,
 					   totalCount: Int, indeterminate: Boolean) {
