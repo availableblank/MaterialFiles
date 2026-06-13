@@ -14,7 +14,9 @@ import me.zhanghai.android.files.provider.FileSystemProviders
 import me.zhanghai.android.files.provider.remote.RemoteFileService
 import me.zhanghai.android.files.provider.remote.RemoteInterface
 import me.zhanghai.android.files.provider.remote.RemoteFileSystemException
+import me.zhanghai.android.files.settings.Settings
 import me.zhanghai.android.files.util.lazyReflectedMethod
+import me.zhanghai.android.files.util.valueCompat
 
 val isRunningAsRoot = Process.myUid() == 0
 
@@ -27,19 +29,41 @@ lateinit var rootContext: Context private set
 
 object RootFileService : RemoteFileService(
     RemoteInterface {
-        when {
-            SuiFileServiceLauncher.isSuiAvailable() -> {
-                SuiFileServiceLauncher.launchService()
-            }
-            LibSuFileServiceLauncher.isSuAvailable() -> {
-                LibSuFileServiceLauncher.launchService()
-            }
-            ShizukuFileServiceLauncher.isShizukuAvailable() -> {
-                ShizukuFileServiceLauncher.launchService()
-            }
-            else -> throw RemoteFileSystemException(
-                "Neither root nor Shizuku is available"
+        val strategy = if (isInRemoteProcess) RootStrategy.NEVER
+                       else Settings.ROOT_STRATEGY.valueCompat
+        when (strategy) {
+            RootStrategy.NEVER -> throw RemoteFileSystemException(
+                "Root access is disabled"
             )
+            RootStrategy.SHIZUKU -> {
+                if (ShizukuFileServiceLauncher.isShizukuAvailable()) {
+                    ShizukuFileServiceLauncher.launchService()
+                } else {
+                    throw RemoteFileSystemException("Shizuku isn't available")
+                }
+            }
+            RootStrategy.ALWAYS -> {
+                when {
+                    SuiFileServiceLauncher.isSuiAvailable() ->
+                        SuiFileServiceLauncher.launchService()
+                    LibSuFileServiceLauncher.isSuAvailable() ->
+                        LibSuFileServiceLauncher.launchService()
+                    else -> throw RemoteFileSystemException("Root isn't available")
+                }
+            }
+            RootStrategy.AUTOMATIC -> {
+                when {
+                    SuiFileServiceLauncher.isSuiAvailable() ->
+                        SuiFileServiceLauncher.launchService()
+                    LibSuFileServiceLauncher.isSuAvailable() ->
+                        LibSuFileServiceLauncher.launchService()
+                    ShizukuFileServiceLauncher.isShizukuAvailable() ->
+                        ShizukuFileServiceLauncher.launchService()
+                    else -> throw RemoteFileSystemException(
+                        "Neither root nor Shizuku is available"
+                    )
+                }
+            }
         }
     }
 ) {
@@ -47,12 +71,9 @@ object RootFileService : RemoteFileService(
 
     private val LOG_TAG = RootFileService::class.java.simpleName
 
-    // Not actually restricted because there's no restriction when running as root.
-    //@RestrictedHiddenApi
     private val activityThreadCurrentActivityThreadMethod by lazyReflectedMethod(
         "android.app.ActivityThread", "currentActivityThread"
     )
-    //@RestrictedHiddenApi
     private val activityThreadGetSystemContextMethod by lazyReflectedMethod(
         "android.app.ActivityThread", "getSystemContext"
     )

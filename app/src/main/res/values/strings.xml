@@ -788,6 +788,7 @@
         <item>Normal access only</item>
         <item>Automatic</item>
         <item>Root access only</item>
+		<item>Shizuku access only</item>
     </string-array>
     <string name="settings_archive_file_name_encoding_title">Archive file name encoding</string>
     <string name="settings_open_apk_default_action_title">Open Android package</string>
