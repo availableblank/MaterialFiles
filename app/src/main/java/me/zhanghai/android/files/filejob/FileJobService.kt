@@ -23,6 +23,7 @@ import java.util.concurrent.Future
 import me.zhanghai.android.files.compat.removeFirstCompat
 import me.zhanghai.android.files.compat.mainExecutorCompat
 import me.zhanghai.android.files.R
+import me.zhanghai.android.files.util.showToast
 
 class FileJobService : Service() {
     private lateinit var wakeWifiLock: WakeWifiLock
