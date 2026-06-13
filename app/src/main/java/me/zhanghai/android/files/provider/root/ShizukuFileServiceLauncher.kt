@@ -28,21 +28,18 @@ import kotlin.coroutines.resumeWithException
 
 object ShizukuFileServiceLauncher {
     private val lock = Any()
-    private val LOG_TAG = ShizukuFileServiceLauncher::class.java.simpleName
+    private val LOG_TAG = "ShizukuFileService"
 
     fun isShizukuAvailable(): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return false
         }
         return try {
-            // Shizuku v13: pingBinder() is deprecated and unreliable.
-            // Use getBinder() instead. If Shizuku is running, it returns a non-null binder
-            // even if the app hasn't been authorized yet.
-            val binder = Shizuku.getBinder()
-            Log.d(LOG_TAG, "Shizuku binder: ${binder != null}")
-            binder != null
+            // Shizuku.pingBinder() requires ShizukuProvider in manifest to work.
+            // It checks if the binder has been received and is alive.
+            Shizuku.pingBinder()
         } catch (e: Exception) {
-            Log.w(LOG_TAG, "Shizuku is not available", e)
+            Log.w(LOG_TAG, "Shizuku not available", e)
             false
         }
     }
@@ -51,12 +48,20 @@ object ShizukuFileServiceLauncher {
     @Throws(RemoteFileSystemException::class)
     fun launchService(): IRemoteFileService {
         synchronized(lock) {
+            // Re-check: pingBinder must be true (binder received and alive)
             if (!isShizukuAvailable()) {
                 throw RemoteFileSystemException("Shizuku isn't available")
             }
-            val permission = Shizuku.checkSelfPermission()
-            Log.d(LOG_TAG, "Shizuku permission: $permission")
-            if (permission != PackageManager.PERMISSION_GRANTED) {
+            if (Shizuku.isPreV11()) {
+                throw RemoteFileSystemException("Shizuku version is too old (pre-v11)")
+            }
+            // Request permission if not granted
+            if (Shizuku.checkSelfPermission() != PackageManager.PERMISSION_GRANTED) {
+                if (Shizuku.shouldShowRequestPermissionRationale()) {
+                    throw RemoteFileSystemException(
+                        "Shizuku permission was denied permanently"
+                    )
+                }
                 val granted = try {
                     runBlocking<Boolean> {
                         suspendCancellableCoroutine { continuation ->
@@ -66,9 +71,9 @@ object ShizukuFileServiceLauncher {
                                     grantResult: Int
                                 ) {
                                     Shizuku.removeRequestPermissionResultListener(this)
-                                    Log.d(LOG_TAG, "Shizuku permission result: $grantResult")
-                                    val granted = grantResult == PackageManager.PERMISSION_GRANTED
-                                    continuation.resume(granted)
+                                    continuation.resume(
+                                        grantResult == PackageManager.PERMISSION_GRANTED
+                                    )
                                 }
                             }
                             Shizuku.addRequestPermissionResultListener(listener)
@@ -82,9 +87,10 @@ object ShizukuFileServiceLauncher {
                     throw RemoteFileSystemException(e)
                 }
                 if (!granted) {
-                    throw RemoteFileSystemException("Shizuku permission isn't granted")
+                    throw RemoteFileSystemException("Shizuku permission wasn't granted")
                 }
             }
+            // Start user service
             return try {
                 runBlocking {
                     try {
@@ -105,15 +111,13 @@ object ShizukuFileServiceLauncher {
                                         name: ComponentName,
                                         service: IBinder
                                     ) {
-                                        val serviceInterface =
+                                        continuation.resume(
                                             IRemoteFileService.Stub.asInterface(service)
-                                        Log.d(LOG_TAG, "Shizuku user service connected")
-                                        continuation.resume(serviceInterface)
+                                        )
                                     }
 
                                     override fun onServiceDisconnected(name: ComponentName) {
                                         if (continuation.isActive) {
-                                            Log.w(LOG_TAG, "Shizuku user service disconnected")
                                             continuation.resumeWithException(
                                                 RemoteFileSystemException(
                                                     "Shizuku service disconnected"
@@ -124,7 +128,6 @@ object ShizukuFileServiceLauncher {
 
                                     override fun onBindingDied(name: ComponentName) {
                                         if (continuation.isActive) {
-                                            Log.w(LOG_TAG, "Shizuku binding died")
                                             continuation.resumeWithException(
                                                 RemoteFileSystemException(
                                                     "Shizuku binding died"
@@ -135,7 +138,6 @@ object ShizukuFileServiceLauncher {
 
                                     override fun onNullBinding(name: ComponentName) {
                                         if (continuation.isActive) {
-                                            Log.w(LOG_TAG, "Shizuku null binding")
                                             continuation.resumeWithException(
                                                 RemoteFileSystemException(
                                                     "Shizuku binding is null"
@@ -151,7 +153,6 @@ object ShizukuFileServiceLauncher {
                             }
                         }
                     } catch (e: TimeoutCancellationException) {
-                        Log.w(LOG_TAG, "Shizuku user service timed out")
                         throw RemoteFileSystemException(e)
                     }
                 }
@@ -166,7 +167,6 @@ object ShizukuFileServiceLauncher {
 @RequiresApi(Build.VERSION_CODES.M)
 class ShizukuFileServiceInterface : RemoteFileServiceInterface() {
     init {
-        Log.i("ShizukuFileService", "Initializing remote file service")
         RootFileService.main()
     }
 }
