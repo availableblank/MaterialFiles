@@ -1238,11 +1238,8 @@ override fun openUnknownWithImageViewer(file: FileItem) {
     }
     
     override fun openUnknownWithArchiveViewer(file: FileItem) {
-        if (file.isListable) {
-            navigateTo(file.listablePath)
-        } else {
-            FileJobService.open(file.path, file.mimeType, false, requireContext())
-        }
+        val archiveRootPath = file.path.createArchiveRootPath()
+        navigateTo(archiveRootPath)
     }
     
     override fun openUnknownWithExternalApp(file: FileItem) {
