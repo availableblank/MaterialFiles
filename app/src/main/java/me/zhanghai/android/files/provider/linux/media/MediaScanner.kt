@@ -21,6 +21,7 @@ import me.zhanghai.android.files.provider.root.isRunningAsRoot
 import me.zhanghai.android.files.util.lazyReflectedMethod
 import java.io.File
 import java.io.IOException
+import me.zhanghai.android.files.provider.root.isInRemoteProcess
 
 /*
  * @see com.android.internal.content.FileSystemProvider
@@ -28,13 +29,16 @@ import java.io.IOException
  */
 object MediaScanner {
     fun scan(file: File, isDeleted: Boolean = false) {
-        // 在远程进程（root/shell）中不执行媒体扫描——
-        // MediaStore API 只对普通 Android 应用进程可用，且 application 未初始化
         if (isRunningAsRoot || isInRemoteProcess) {
             return
         }
         MediaScannerConnection.scanFile(application, arrayOf(file.path), null) { _, _ ->
             if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q && isDeleted) {
+                // ModernMediaScanner has a bug on Android 10 that may prevent it from removing
+                // certain files after their deletion. This has been fixed on Android 11 by
+                // https://android.googlesource.com/platform/packages/providers/MediaProvider/+/637d133d90f49dd18bda5de219184bfa9d6c2deb
+                // , but we still have to work around it for Android 10 by always trying to delete
+                // the MediaStore entry ourselves.
                 deleteMediaStoreEntryAsync(file)
             }
         }
@@ -84,7 +88,7 @@ object MediaScanner {
     }
 
     fun createScanOnCloseFileChannel(fileChannel: FileChannel, file: File): FileChannel =
-        if (isRunningAsRoot) {
+        if (isRunningAsRoot || isInRemoteProcess) {
             fileChannel
         } else {
             object : DelegateFileChannel(fileChannel) {
