@@ -5,6 +5,8 @@
 
 package me.zhanghai.android.files.filejob
 
+import androidx.annotation.StringRes
+import me.zhanghai.android.files.compat.mainExecutorCompat
 import me.zhanghai.android.files.util.showToast
 import java.io.IOException
 import java.io.InterruptedIOException
@@ -20,9 +22,18 @@ abstract class FileJob {
         this.service = service
         try {
             run()
-            // TODO: Toast
+            val toastRes = completionToastRes
+            if (toastRes != null) {
+                service.mainExecutorCompat.execute {
+                    service.showToast(
+                        if (completionToastArgs.isNotEmpty())
+                            service.getString(toastRes, *completionToastArgs)
+                        else
+                            service.getString(toastRes)
+                    )
+                }
+            }
         } catch (e: InterruptedIOException) {
-            // TODO
             e.printStackTrace()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -34,4 +45,9 @@ abstract class FileJob {
 
     @Throws(IOException::class)
     protected abstract fun run()
+
+    @StringRes
+    protected open val completionToastRes: Int? = null
+
+    protected open val completionToastArgs: Array<out Any?> = emptyArray()
 }

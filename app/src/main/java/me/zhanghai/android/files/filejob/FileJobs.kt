@@ -618,6 +618,12 @@ class ArchiveFileJob(
     private val filter: Int,
     private val password: String?
 ) : FileJob() {
+
+    override val completionToastRes: Int?
+        get() = R.string.file_job_archive_completion_toast
+    override val completionToastArgs: Array<out Any?>
+        get() = arrayOf(getFileName(archiveFile))
+
     @Throws(IOException::class)
     override fun run() {
         val scanInfo = scan(sources, R.plurals.file_job_archive_scan_notification_title_format)
@@ -734,6 +740,13 @@ private fun FileJob.postArchiveNotification(transferInfo: TransferInfo, currentF
 }
 
 class CopyFileJob(private val sources: List<Path>, private val targetDirectory: Path) : FileJob() {
+
+    private var isExtract = false
+
+    override val completionToastRes: Int?
+        get() = if (isExtract) R.string.file_job_extract_completion_toast
+                else R.string.file_job_copy_completion_toast
+
     @Throws(IOException::class)
     override fun run() {
         val isExtract = sources.all { it.isArchivePath }
@@ -944,6 +957,10 @@ private fun FileJob.create(path: Path, createDirectory: Boolean) {
 }
 
 class DeleteFileJob(private val paths: List<Path>) : FileJob() {
+
+    override val completionToastRes: Int?
+        get() = R.string.file_job_delete_completion_toast
+
     @Throws(IOException::class)
     override fun run() {
         val scanInfo = scan(paths, R.plurals.file_job_delete_scan_notification_title_format)
@@ -1069,6 +1086,10 @@ private fun FileJob.postDeleteNotification(transferInfo: TransferInfo, currentPa
 }
 
 class MoveFileJob(private val sources: List<Path>, private val targetDirectory: Path) : FileJob() {
+
+    override val completionToastRes: Int?
+        get() = R.string.file_job_move_completion_toast
+
     @Throws(IOException::class)
     override fun run() {
         val sourcesToMove = mutableListOf<Path>()

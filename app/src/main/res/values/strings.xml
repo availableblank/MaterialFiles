@@ -811,6 +811,12 @@
     <string name="about_author_github_title">Follow on GitHub</string>
     <string name="about_author_twitter_title">Follow on Twitter</string>
 
+	<string name="file_job_archive_completion_toast">压缩完成</string>
+	<string name="file_job_extract_completion_toast">解压完成</string>
+	<string name="file_job_copy_completion_toast">复制完成</string>
+	<string name="file_job_move_completion_toast">移动完成</string>
+	<string name="file_job_delete_completion_toast">删除完成</string>
+
     <string name="shortcut_downloads_title" translatable="false">@string/navigation_standard_directory_downloads</string>
     <string name="shortcut_ftp_server_title" translatable="false">@string/ftp_server_title</string>
 </resources>
