@@ -21,9 +21,6 @@ import me.zhanghai.android.files.util.removeFirst
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import me.zhanghai.android.files.compat.removeFirstCompat
-import me.zhanghai.android.files.compat.mainExecutorCompat
-import me.zhanghai.android.files.R
-import me.zhanghai.android.files.util.showToast
 
 class FileJobService : Service() {
     private lateinit var wakeWifiLock: WakeWifiLock
@@ -81,8 +78,6 @@ class FileJobService : Service() {
 
         instance = null
 
-		FileJobStateListLiveData.clear()
-
         synchronized(runningJobs) {
             while (runningJobs.isNotEmpty()) {
                 runningJobs.removeFirst().value.cancel(true)
@@ -97,36 +92,10 @@ class FileJobService : Service() {
         wakeWifiLock.isAcquired = jobCount > 0
     }
 
-	fun updateJobState(state: FileJobState) {
-			FileJobStateListLiveData.updateJobState(state)
-	}
-
-	fun onJobCompleted(jobId: Int, operationType: OperationType) {
-			FileJobStateListLiveData.removeJobState(jobId)
-			val messageRes = when (operationType) {
-				OperationType.COPY -> R.string.file_job_task_copy_completed
-				OperationType.MOVE -> R.string.file_job_task_move_completed
-				OperationType.DELETE -> R.string.file_job_task_delete_completed
-				OperationType.ARCHIVE -> R.string.file_job_task_archive_completed
-				OperationType.EXTRACT -> R.string.file_job_task_extract_completed
-			}
-		mainExecutorCompat.execute {
-			showToast(messageRes)
-		}
-	}
-
-	fun onJobFailed(jobId: Int, operationType: OperationType) {
-			FileJobStateListLiveData.removeJobState(jobId)
-	}
-
     companion object {
         private var instance: FileJobService? = null
 
         private val pendingJobs = mutableListOf<FileJob>()
-
-		private val _jobStateListLiveData = FileJobStateListLiveData
-		val jobStateListLiveData: FileJobStateListLiveData
-			get() = _jobStateListLiveData
 
         val runningJobCount: Int
             @MainThread
@@ -141,18 +110,6 @@ class FileJobService : Service() {
                 pendingJobs.add(job)
                 context.startService(Intent(context, FileJobService::class.java))
             }
-		    val type = job.operationType ?: OperationType.COPY
-			val titleRes = when (type) {
-				OperationType.COPY -> R.string.file_job_task_copy_title
-				OperationType.MOVE -> R.string.file_job_task_move_title
-				OperationType.DELETE -> R.string.file_job_task_delete_title
-				OperationType.ARCHIVE -> R.string.file_job_task_archive_title
-				OperationType.EXTRACT -> R.string.file_job_task_extract_title
-			}
-			val title = context.getString(titleRes)
-			FileJobStateListLiveData.updateJobState(
-				FileJobState.createInitial(job.id, title, type)
-			)
         }
 
         fun archive(

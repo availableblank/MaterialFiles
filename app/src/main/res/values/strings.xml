@@ -811,19 +811,6 @@
     <string name="about_author_github_title">Follow on GitHub</string>
     <string name="about_author_twitter_title">Follow on Twitter</string>
 
-	<string name="navigation_file_jobs">任务</string>
-	<string name="file_job_list_empty">没有正在进行的任务</string>
-	<string name="file_job_task_copy_title">正在复制…</string>
-	<string name="file_job_task_move_title">正在移动…</string>
-	<string name="file_job_task_delete_title">正在删除…</string>
-	<string name="file_job_task_archive_title">正在压缩…</string>
-	<string name="file_job_task_extract_title">正在解压…</string>
-	<string name="file_job_task_copy_completed">复制完成</string>
-	<string name="file_job_task_move_completed">移动完成</string>
-	<string name="file_job_task_delete_completed">删除完成</string>
-	<string name="file_job_task_archive_completed">压缩完成</string>
-	<string name="file_job_task_extract_completed">解压完成</string>
-
     <string name="shortcut_downloads_title" translatable="false">@string/navigation_standard_directory_downloads</string>
     <string name="shortcut_ftp_server_title" translatable="false">@string/ftp_server_title</string>
 </resources>

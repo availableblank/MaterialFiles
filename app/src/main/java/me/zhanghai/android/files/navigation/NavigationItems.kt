@@ -35,7 +35,6 @@ import me.zhanghai.android.files.util.isMounted
 import me.zhanghai.android.files.util.putArgs
 import me.zhanghai.android.files.util.supportsExternalStorageManager
 import me.zhanghai.android.files.util.valueCompat
-import me.zhanghai.android.files.filejob.FileJobListActivity
 
 val navigationItems: List<NavigationItem?>
     get() =
@@ -355,16 +354,11 @@ private class BookmarkDirectoryItem(
 }
 
 private val menuItems: List<NavigationItem>
-    @Size(4)
+    @Size(3)
     get() = listOf(
         IntentMenuItem(
             R.drawable.shared_directory_icon_white_24dp, R.string.navigation_ftp_server,
             FtpServerActivity::class.createIntent()
-        ),
-        IntentMenuItem(
-            R.drawable.file_job_icon_white_24dp,  // 需要添加此图标资源
-            R.string.navigation_file_jobs,          // 需要添加此字符串资源
-            FileJobListActivity.createIntent()
         ),
         IntentMenuItem(
             R.drawable.settings_icon_white_24dp, R.string.navigation_settings,

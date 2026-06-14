@@ -310,17 +310,6 @@ private fun FileJob.postScanNotification(scanInfo: ScanInfo, @PluralsRes titleRe
     val fileCount: Int = scanInfo.fileCount
     val title: String = getQuantityString(titleRes, fileCount, fileCount, size)
     postNotification(title, null, null, null, 0, 0, true, true)
-
-    val type = operationType ?: OperationType.COPY
-    val operationTitleRes = when (type) {
-        OperationType.COPY -> R.string.file_job_task_copy_title
-        OperationType.MOVE -> R.string.file_job_task_move_title
-        OperationType.DELETE -> R.string.file_job_task_delete_title
-        OperationType.ARCHIVE -> R.string.file_job_task_archive_title
-        OperationType.EXTRACT -> R.string.file_job_task_extract_title
-    }
-    val operationTitle = service.getString(operationTitleRes)
-    updateJobState(operationTitle, "", 0, fileCount, false)
 }
 
 private class ScanInfo {
@@ -399,19 +388,6 @@ private fun FileJob.postTransferSizeNotification(
         progress = progressLong.toInt()
     }
     postNotification(title, text, null, null, max, progress, false, true)
-
-    val type = operationType ?: OperationType.COPY
-    val operationTitleRes = when (type) {
-        OperationType.COPY -> R.string.file_job_task_copy_title
-        OperationType.MOVE -> R.string.file_job_task_move_title
-        OperationType.DELETE -> R.string.file_job_task_delete_title
-        OperationType.ARCHIVE -> R.string.file_job_task_archive_title
-        OperationType.EXTRACT -> R.string.file_job_task_extract_title
-    }
-    val operationTitle = service.getString(operationTitleRes)
-    val currentFileName = getFileName(currentSource)
-    val completedCount = transferInfo.transferredFileCount
-    updateJobState(operationTitle, currentFileName, completedCount, fileCount, false)
 }
 
 private fun FileJob.postTransferCountNotification(
@@ -448,19 +424,6 @@ private fun FileJob.postTransferCountNotification(
         indeterminate = false
     }
     postNotification(title, text, null, null, max, progress, indeterminate, true)
-
-    val type = operationType ?: OperationType.COPY
-    val operationTitleRes = when (type) {
-        OperationType.COPY -> R.string.file_job_task_copy_title
-        OperationType.MOVE -> R.string.file_job_task_move_title
-        OperationType.DELETE -> R.string.file_job_task_delete_title
-        OperationType.ARCHIVE -> R.string.file_job_task_archive_title
-        OperationType.EXTRACT -> R.string.file_job_task_extract_title
-    }
-    val operationTitle = service.getString(operationTitleRes)
-    val currentFileName = getFileName(currentPath)
-    val completedCount = transferInfo.transferredFileCount
-    updateJobState(operationTitle, currentFileName, completedCount, fileCount, false)
 }
 
 private class TransferInfo(scanInfo: ScanInfo, val target: Path?) {
@@ -655,7 +618,6 @@ class ArchiveFileJob(
     private val filter: Int,
     private val password: String?
 ) : FileJob() {
-	override val operationType: OperationType = OperationType.ARCHIVE
     @Throws(IOException::class)
     override fun run() {
         val scanInfo = scan(sources, R.plurals.file_job_archive_scan_notification_title_format)
@@ -772,8 +734,6 @@ private fun FileJob.postArchiveNotification(transferInfo: TransferInfo, currentF
 }
 
 class CopyFileJob(private val sources: List<Path>, private val targetDirectory: Path) : FileJob() {
-	override val operationType: OperationType
-        get() = if (sources.all { it.isArchivePath }) OperationType.EXTRACT else OperationType.COPY
     @Throws(IOException::class)
     override fun run() {
         val isExtract = sources.all { it.isArchivePath }
@@ -984,7 +944,6 @@ private fun FileJob.create(path: Path, createDirectory: Boolean) {
 }
 
 class DeleteFileJob(private val paths: List<Path>) : FileJob() {
-	override val operationType: OperationType = OperationType.DELETE
     @Throws(IOException::class)
     override fun run() {
         val scanInfo = scan(paths, R.plurals.file_job_delete_scan_notification_title_format)
@@ -1110,7 +1069,6 @@ private fun FileJob.postDeleteNotification(transferInfo: TransferInfo, currentPa
 }
 
 class MoveFileJob(private val sources: List<Path>, private val targetDirectory: Path) : FileJob() {
-	override val operationType: OperationType = OperationType.MOVE
     @Throws(IOException::class)
     override fun run() {
         val sourcesToMove = mutableListOf<Path>()
